@@ -281,7 +281,6 @@ void my_exit_group(int status) {
 asmlinkage long interceptor(struct pt_regs reg) {
 	/*check if the syscall is being monitored for the current pid.*/
 	int syscall;
-	long result;
 
 	syscall = reg.ax;
 	spin_lock(&calltable_lock);
@@ -290,9 +289,8 @@ asmlinkage long interceptor(struct pt_regs reg) {
 		log_message(current->pid, reg.ax, reg.bx, reg.cx, reg.dx, reg.si, reg.di, reg.bp);
 	}
 	spin_unlock(&pidlist_lock);
-	result = table[syscall].f(reg);
 	spin_unlock(&calltable_lock);
-	return result;	/* call the original system call*/
+	return table[syscall].f(reg);	/* call the original system call*/
 }
 
 /**
