@@ -286,7 +286,7 @@ asmlinkage long interceptor(struct pt_regs reg) {
 	syscall = reg.ax;
 	spin_lock(&calltable_lock);
 	spin_lock(&pidlist_lock);
-	if ((table[syscall].monitored == 2) || (table[syscall].monitored == 1 && check_pid_monitored(syscall, current->pid))) {
+	if (((table[syscall].monitored == 2) && check_pid_monitored(syscall, current->pid) == 0) || (table[syscall].monitored == 1 && check_pid_monitored(syscall, current->pid))) {
 		log_message(current->pid, reg.ax, reg.bx, reg.cx, reg.dx, reg.si, reg.di, reg.bp);
 	}
 	spin_unlock(&pidlist_lock);
