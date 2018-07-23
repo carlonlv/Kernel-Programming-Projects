@@ -13,7 +13,7 @@ Note that the frame number and status bits share a word, with the low-order PAGE
 
 This project also implements each of the four different page replacement algorithms: FIFO, exact LRU, CLOCK (with one ref-bit), OPT. in
 fifo.c, lru.c, clock.c, opt.c.
-For each algorithm, the result of running the programs on memory sizes 50, 100, 150, and 200. The data from these runs to create a set of tables that include the following columns. (Please label your columns in the following order,) 
+For each algorithm, the result of running the programs on memory sizes 50, 100, 150, and 200. The data from these runs to create a set of tables that include the following columns.
 Hit rate
 Hit count
 Miss count
