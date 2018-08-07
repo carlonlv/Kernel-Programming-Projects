@@ -45,10 +45,6 @@ int allocate_frame(pgtbl_entry_t *p) {
 			//In disk and not dirty
 			evict_clean_count++;
 		} else{
-			if ((victim->frame & PG_ONSWAP) == 0) {
-				//Not in disk
-				victim->frame = (victim->frame | PG_ONSWAP); /*There is a copy of victim in swap file.*/
-			}
 			if ((victim->frame & PG_DIRTY) != 0) {
 				//Dirty
 				victim->frame = (victim->frame & ~PG_DIRTY);
