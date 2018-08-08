@@ -1,0 +1,39 @@
+Name:Yucen Zhang
+CDFID:zhan5274
+SVN revison Number: 7:15pm 08/06/2018
+
+Name:Yupeng Huang
+CDFID:huang740
+SVN revison Number: 7:15pm 08/06/2018
+
+Name:Jialun Lyu
+CDFID:lyujialu
+SVN revison Number: 7:15pm 08/06/2018
+
+Note that the bonus requirement is implemented in ext2_rm.c instead of ext2_rm_bonus.c, also our helper functions are implemented in ext2general.c and ext2general.h.
+We submitted empty files for helper.c, helper.h and ext2_rm_bonus.c.
+
+How did we implement rm?
+To remove a directory entry, we first locate its position(the block that stores it) from its parent inode, check if the block contains other directory entries, if not,the block is freed, then we free all of its blocks if it is a file, we set its deletion time, set its inode size to 0, set the inode of the directory entry to 0, the rec_len of the directory entry does not change at all.
+To remove a directory, we recursively remove all of its files and subdirectories, and then remove the empty directory that only contains "." and "..".
+
+How did we implement ls?
+We first check the directory entry is valid by checking if its inode is set to 0. If its inode is 0, then it shows that it was deleted before and no longer valid. We only print of valid directory entries's name.
+
+How did we implement ln/cp/mkdir?
+We used first fit algorithm to locate inodes and blocks needed. Then we go to its parent directory inode and try to add a new directory entry, we used first fit algorithm here as well. To maximize space efficiency, we check if the occupied blocks can fit in another directory entry, we iterate through the occupied blocks and check the rec_len of the directory entries that has inode of 0. We calculate if the rec_len is large enough for the new directory entry. If no such prioritized invalid directory entry is available, we check space between the last directory entry and the end of the block is large enough for two directory entries. We add the new diretory entry there if possible. If the new directory entry cannot fit in any occupied blocks, a new block is allocated for this directory entry.
+
+cp: We did implement the feature that the destination file gets overwritten if the destination filepath points to a file. Also, the file with the same name as the source file gets overwritten if it is contained in the destion directory.
+However, we DID NOT implement the feature to overwrite the file that the symbolic link points to if the destionation filepath points to a symblock link. Though we don't think this is required according to piazza. Instead, the symblock link file gets treated exactly the same as a regular file, that is, its content will be overwritten.
+We also implemented the feature to allow copying to double indirect blocks and triple indirect blocks, even though the implmentation decreases readibility of our code, we think it worths because it works when we test it.
+
+ls: We DID NOT implement the feature to print out the file name that the symbolic link points to if the filepath of a symbolic link is provided. Though we don't think this is required according to piazza.
+
+rm: We also implemented the feature to remove double indirect blocks and triple indirect blocks, even though the implmentation decreases readibility of our code, we think it worths because it works when we test it.
+
+ln: We check if the length of the provided destination filepath is less and equal to 1024 characters (or bytes). We DID NOT truncate the filepath if the filepath is longer than that. Again, we don't think this is required according to piazza. Instead, proper error message will be printed out and proper error will be returned if such things happen for the sake of simplicity.
+Also, we allow creating soft links to another soft link. But if one of the soft links or original files gets deleted or in any case original file is no longer reachable from the soft link, creating a hard link to such soft link wouuld fail.
+
+mkdir/ls/ln: The name of newly created directory entry cannot exceed 1024 - 8 = 1016 characters(bytes). We DID NOT truncate the name to span multiple blocks. Instead, proper error message will be printed out and proper error will be returned.
+
+Additional information: Our files are indented with two spaces.
