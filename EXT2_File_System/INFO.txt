@@ -1,18 +1,3 @@
-Name:Yucen Zhang
-CDFID:zhan5274
-SVN revison Number: 7:15pm 08/06/2018
-
-Name:Yupeng Huang
-CDFID:huang740
-SVN revison Number: 7:15pm 08/06/2018
-
-Name:Jialun Lyu
-CDFID:lyujialu
-SVN revison Number: 7:15pm 08/06/2018
-
-Note that the bonus requirement is implemented in ext2_rm.c instead of ext2_rm_bonus.c, also our helper functions are implemented in ext2general.c and ext2general.h.
-We submitted empty files for helper.c, helper.h and ext2_rm_bonus.c.
-
 How did we implement rm?
 To remove a directory entry, we first locate its position(the block that stores it) from its parent inode, check if the block contains other directory entries, if not,the block is freed, then we free all of its blocks if it is a file, we set its deletion time, set its inode size to 0, set the inode of the directory entry to 0, the rec_len of the directory entry does not change at all.
 To remove a directory, we recursively remove all of its files and subdirectories, and then remove the empty directory that only contains "." and "..".
