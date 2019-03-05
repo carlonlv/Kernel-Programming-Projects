@@ -24,4 +24,4 @@ The result can be viewed in README.pdf
 
 To manually test these yourself, first cd into /traceprogs, and then type in "make all", and then type in "make traces" if it tells you permission denied, give execution permission to all the files inside /traceprogs.  
 Then go back to /Memory_Management_Simulator and then type in "make sim".  
-The format of running simulation program is "./sim -f /traceprogs/(tracefile=tr-blocked.ref) -m (memorysize=50) -s (swapfilesize=2000) -a (algorithm=lru)
+The format of running simulation program is "./sim -f /traceprogs/(tracefile=tr-blocked.ref) -m (memorysize=50) -s (swapfilesize=2000) -a (algorithm=lru)"
